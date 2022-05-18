@@ -158,8 +158,15 @@ async function run() {
    */
 
         app.get('/doctor', verifyJWT, async (req, res) => {
-            const doctors = await doctorCollection.find().toArray()
-            res.send(doctors);
+            const result = await doctorCollection.find().toArray()
+            res.send(result);
+        });
+
+        app.delete('/doctor/:email', verifyJWT, async (req, res) => {
+            const email = req.params.email;
+            const filter = { email: email }
+            const result = await doctorCollection.deleteOne(filter)
+            res.send(result);
         })
 
         app.post('/doctor', verifyJWT, verifyAdmin, async (req, res) => {
